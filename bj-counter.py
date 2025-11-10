@@ -1,5 +1,4 @@
 # Вхідні змінні
-
 first_card_croupier = input("Введіть карту круп'є - ")
 your_card_1, your_card_2 = input("Введіть свої карти через пробіл - ").split()
 
