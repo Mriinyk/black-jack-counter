@@ -1,6 +1,6 @@
 # Вхідні змінні
 
-first_card_croupier = input("Введіть карту крупє - ")
+first_card_croupier = input("Введіть карту круп'є - ")
 your_card_1, your_card_2 = input("Введіть свої карти через пробіл - ").split()
 
 #Мапа карт
@@ -36,7 +36,6 @@ own_cards_sum = sum_of_own_cards(your_card_1, your_card_2)
 print(f"sum of own cards: - {own_cards_sum}")
 
 #Словник з картами, які вже були виколристані у грі
-
 blackjack_cards = {
     "2": 0,
     "3": 0,
