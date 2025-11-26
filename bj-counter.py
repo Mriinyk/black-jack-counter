@@ -60,19 +60,3 @@ def sum_of_own_cards(your_card_1: int, your_card_2: int) -> int:
 own_cards_sum = sum_of_own_cards(your_card_1, your_card_2)
 print(f"sum of own cards: - {own_cards_sum}")
 
-#Словник з картами, які вже були виколристані у грі
-blackjack_cards = {
-    "2": 0,
-    "3": 0,
-    "4": 0,
-    "5": 0,
-    "6": 0,
-    "7": 0,
-    "8": 0,
-    "9": 0,
-    "10": 0,
-    "J": 0,  # Валет
-    "Q": 0,  # Дама
-    "K": 0,  # Король
-    "A": 0   # Туз
-}
