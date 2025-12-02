@@ -20,5 +20,5 @@ def used_cards_counter(*cards):
         cards_upper = card.upper()
         if cards_upper in used_cards:
             used_cards[cards_upper] += 1
-    return used_cards
+    return "Список карт, які були використані", used_cards
 
