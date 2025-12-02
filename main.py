@@ -8,7 +8,7 @@ your_card_1, your_card_2 = input("Введіть свої карти через 
 card_map = {'K': 10, 'Q': 10, 'J': 10, 'A': 11}
 
 #Контроль карт, які вже були використані в грі
-print(*фused_cards(first_card_croupier, your_card_1, your_card_2))
+print(*used_cards(first_card_croupier, your_card_1, your_card_2))
 
 # Буде конвертувати змінні в int
 def value_converter(*cards) -> list[int]:
