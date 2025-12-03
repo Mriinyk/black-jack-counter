@@ -1,4 +1,5 @@
 from usedcardcounter import used_cards_counter as used_cards
+from usedcardcounter import remaining_cards
 
 # Вхідні змінні
 first_card_croupier = input("Введіть карту круп'є - ")
@@ -8,7 +9,9 @@ your_card_1, your_card_2 = input("Введіть свої карти через 
 card_map = {'K': 10, 'Q': 10, 'J': 10, 'A': 11}
 
 #Контроль карт, які вже були використані в грі
-print(*used_cards(first_card_croupier, your_card_1, your_card_2))
+used_cards_state = used_cards(first_card_croupier, your_card_1, your_card_2)
+print("Список карт які були використані: ", used_cards_state)
+print("Кількість карт, які залишилися: ", remaining_cards(used_cards_state))
 
 # Буде конвертувати змінні в int
 def value_converter(*cards) -> list[int]:
@@ -30,11 +33,12 @@ print("your_card_2: - ", your_card_2)
 
 #Розрахунок власних карт з урахуванням "А" 1, або 11
 def sum_of_own_cards(your_card_1: int, your_card_2: int) -> int:
-    if your_card_1 + your_card_2 > 21 and your_card_1 == 11:
-        your_card_1 = 1
-    if your_card_1 + your_card_2 > 21 and your_card_2 == 11:
-        your_card_2 = 1
-    return your_card_1 + your_card_2
+    current_sum = your_card_1 + your_card_2
+    if current_sum > 21 and your_card_1 == 11:
+        current_sum -= 10 # 22 -> 12
+    if current_sum > 21 and your_card_2 == 11:
+        current_sum -= 10 # 22 -> 12
+    return current_sum
 
 own_cards_sum = sum_of_own_cards(your_card_1, your_card_2)
 print(f"sum of own cards: - {own_cards_sum}")
