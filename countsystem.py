@@ -1,5 +1,6 @@
 from usedcardcounter import remaining_cards
 
+
 #Словник зі значеннями карт для розрахунків
 def count_system(*cards):
     wong_halves_values = {
@@ -17,11 +18,12 @@ def count_system(*cards):
     "K": -1.0,   # Король (K)
     "A": -1.0    # Туз (A)
 }
-    for card in wong_halves_values:
-        cards_upper = card.upper()
-        current_score = 0
-        if cards_upper in wong_halves_values:
-            current_score += wong_halves_values[cards_upper]
-        return current_score
+    current_score = 0.0
+    
+    for card in cards:
+        card_key = str(card).upper()
+        if card_key in wong_halves_values:
+            current_score += wong_halves_values[card_key]
+    return current_score
     
 #def actual_score(current_score, remaining_cards):

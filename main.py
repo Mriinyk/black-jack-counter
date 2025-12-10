@@ -2,6 +2,7 @@ from usedcardcounter import used_cards_counter as used_cards
 from usedcardcounter import remaining_cards
 from countsystem import count_system
 
+
 # Вхідні змінні
 first_card_croupier = input("Введіть карту круп'є - ")
 your_card_1, your_card_2 = input("Введіть свої карти через пробіл - ").split()
@@ -12,10 +13,12 @@ card_map = {'K': 10, 'Q': 10, 'J': 10, 'A': 11}
 #Контроль карт, які вже були використані в грі
 used_cards_state = used_cards(first_card_croupier, your_card_1, your_card_2)
 print("Список карт які були використані: ", used_cards_state)
-print("Кількість карт, які залишилися: ", remaining_cards(used_cards_state))
+remain_cards = remaining_cards(used_cards_state)
+print("Кількість карт, які залишилися: ", remain_cards)
 
 #Розрахунок карт
-
+current_score = count_system(first_card_croupier, your_card_1, your_card_2)
+print("Поточний рахунок: ", current_score)
 
 # Буде конвертувати змінні в int
 def value_converter(*cards) -> list[int]:
