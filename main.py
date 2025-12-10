@@ -1,6 +1,5 @@
-from usedcardcounter import used_cards_counter as used_cards
-from usedcardcounter import remaining_cards
-from countsystem import count_system
+from usedcardcounter import used_cards_counter as used_cards, remaining_cards
+from countsystem import count_system, actual_score
 
 
 # Вхідні змінні
@@ -18,7 +17,8 @@ print("Кількість карт, які залишилися: ", remain_cards
 
 #Розрахунок карт
 current_score = count_system(first_card_croupier, your_card_1, your_card_2)
-print("Поточний рахунок: ", current_score)
+true_score = actual_score(current_score, remain_cards)
+print("Справжній рахунок: ", true_score)
 
 # Буде конвертувати змінні в int
 def value_converter(*cards) -> list[int]:

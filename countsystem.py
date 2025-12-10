@@ -1,6 +1,3 @@
-from usedcardcounter import remaining_cards
-
-
 #Словник зі значеннями карт для розрахунків
 def count_system(*cards):
     wong_halves_values = {
@@ -26,4 +23,6 @@ def count_system(*cards):
             current_score += wong_halves_values[card_key]
     return current_score
     
-#def actual_score(current_score, remaining_cards):
+def actual_score(current_score, remain_cards):
+    true_score = (current_score * 52) / remain_cards
+    return round(true_score, 2)
