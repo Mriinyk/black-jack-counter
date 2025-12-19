@@ -85,3 +85,12 @@ if rival_1_card1 != None:
     print(f"Сума карт першого суперника: - {rival_1_cards_sum}")
     print(f"Сума карт другого суперника: - {rival_2_cards_sum}")
 
+#Логіка додавання карт
+def get_extra_card(own_cards_sum, rival_1_cards_sum, rival_2_cards_sum):
+   while True:
+         own_extra_card = input(f"Введіть вашу додаткову карту (для пропуску натисніть Enter): ")
+         if rival_1_cards_sum != None:
+            rival_1_extra_card = input(f"Введіть додаткову карту Суперника 1 (для пропуску натисніть Enter): ")
+            rival_2_extra_card = input(f"Введіть додаткову карту Суперника 2 (для пропуску натисніть Enter): ")
+         if not own_extra_card and not rival_1_extra_card and not rival_2_extra_card:
+            break
