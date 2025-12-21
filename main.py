@@ -85,27 +85,18 @@ if rival_1_card1 != None:
     print(f"Сума карт першого суперника: - {rival_1_cards_sum}")
     print(f"Сума карт другого суперника: - {rival_2_cards_sum}")
 
-#Логіка додавання карт
+#Логіка додавання додаткових карт
 def get_extra_card(own_cards_sum, rival_1_cards_sum, rival_2_cards_sum):
-   rival_1_extra_card = None
-   rival_2_extra_card = None
-   while True:
-         own_extra_card = input(f"Введіть вашу додаткову карту (для пропуску натисніть Enter): ")
-         if play_with_rivals == "так":
-            rival_1_extra_card = input(f"Введіть додаткову карту Суперника 1 (для пропуску натисніть Enter): ")
-            rival_2_extra_card = input(f"Введіть додаткову карту Суперника 2 (для пропуску натисніть Enter): ")
-         if not own_extra_card and not rival_1_extra_card and not rival_2_extra_card:
-            break
-    
-   extra_card_list = [own_extra_card, rival_1_extra_card, rival_2_extra_card]
+    rival_1_extra_card = None
+    rival_2_extra_card = None
+    own_extra_card = input(f"Введіть вашу додаткову карту (для пропуску натисніть Enter): ").split()
+    own_extra_card = value_converter(*own_extra_card)
+    if play_with_rivals == "так":
+     rival_1_extra_card = input(f"Введіть додаткову карту Суперника 1 (для пропуску натисніть Enter): ").split()
+     rival_1_extra_card = value_converter(*rival_1_extra_card)
+     rival_2_extra_card = input(f"Введіть додаткову карту Суперника 2 (для пропуску натисніть Enter): ").split()
+     rival_2_extra_card = value_converter(*rival_2_extra_card)
 
-   clean_extra_list = [extra for extra in extra_card_list if extra is not None]
-
-   extra_cards = value_converter(*clean_extra_list)
-   own_extra_card = extra_cards[:1]
-   if len(extra_cards) > 1:
-       rival_1_extra_card, rival_2_extra_card = extra_cards[1:]
-       
-
+     
 
 get_extra_card(own_cards_sum, rival_1_cards_sum, rival_2_cards_sum)
