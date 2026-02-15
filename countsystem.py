@@ -22,7 +22,8 @@ def count_system(*cards):
         if card_key in wong_halves_values:
             current_score += wong_halves_values[card_key]
     return current_score
-    
+
+#Вираховує справжній рахунок  
 def actual_score(current_score, remain_cards):
     true_score = (current_score * 52) / remain_cards
     return round(true_score, 2)
