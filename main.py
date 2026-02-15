@@ -1,3 +1,5 @@
+from getextracard import GetExtraCard
+from valueconverter import value_converter
 from usedcardcounter import used_cards_counter as used_cards, remaining_cards
 from countsystem import count_system, actual_score
 
@@ -15,9 +17,6 @@ if play_with_rivals == "так":
     print("="*12,"Вхідні дані суперників","="*12)
     rival_1_card1, rival_1_card2 = input("Введіть карти свого першого суперника через пробіл - ").split()
     rival_2_card1, rival_2_card2 = input("Введіть карти свого другого суперника через пробіл - ").split()
-
-#Мапа карт
-card_map = {'K': 10, 'Q': 10, 'J': 10, 'A': 11}
 
 #Фільтрація карт, включаючи можливі None
 all_cards = [
@@ -39,17 +38,7 @@ true_score = actual_score(current_score, remain_cards)
 print("Справжній рахунок: ", true_score)
 
 # Буде конвертувати змінні в int
-def value_converter(*cards) -> list[int]:
-    cards_list = []
-    for card in cards:
-        cards_upper = card.upper()
-        if cards_upper in card_map:
-            cards_list.append(card_map[cards_upper])
-        elif cards_upper.isdigit():
-            cards_list.append(int(cards_upper))
-    return cards_list
-
-all_cards_list = value_converter(*cards_to_count)
+all_cards_list = value_converter(cards_to_count)
 first_card_croupier, your_card_1, your_card_2 = all_cards_list[:3]
 
 if len(all_cards_list) > 3:
@@ -86,11 +75,29 @@ if rival_1_card1 != None:
     print(f"Сума карт другого суперника: - {rival_2_cards_sum}")
 
 #Логіка додавання карт
-def get_extra_card(own_cards_sum, rival_1_cards_sum, rival_2_cards_sum):
-   while True:
-         own_extra_card = input(f"Введіть вашу додаткову карту (для пропуску натисніть Enter): ")
-         if rival_1_cards_sum != None:
-            rival_1_extra_card = input(f"Введіть додаткову карту Суперника 1 (для пропуску натисніть Enter): ")
-            rival_2_extra_card = input(f"Введіть додаткову карту Суперника 2 (для пропуску натисніть Enter): ")
-         if not own_extra_card and not rival_1_extra_card and not rival_2_extra_card:
-            break
+print("="*12,"Роздача додаткових карт","="*12)
+
+while True:
+    own_extra_cards = input(f"Введіть ваші додаткові карту (для пропуску натисніть Enter): ").split()
+    own_exra = GetExtraCard(own_extra_cards, own_cards_sum)
+    own_cards_sum = own_exra.calculate_new_sum()
+
+    if rival_1_cards_sum != None:
+        rival_1_extra_cards = input(f"Введіть додаткові карти Суперника 1 (для пропуску натисніть Enter): ").split()
+        rival_1_extra = GetExtraCard(rival_1_extra_cards, rival_1_cards_sum)
+        rival_1_cards_sum = rival_1_extra.calculate_new_sum()
+
+        rival_2_extra_cards = input(f"Введіть додаткові карти Суперника 2 (для пропуску натисніть Enter): ").split()
+        rival_2_extra = GetExtraCard(rival_2_extra_cards, rival_2_cards_sum)
+        rival_2_cards_sum = rival_2_extra.calculate_new_sum()
+
+
+    print("="*12,"Оновлені дані гри","="*12)
+    print(f"Ваша поточна сума: {own_cards_sum}")
+    if rival_1_cards_sum:
+        print(f"Поточна сума Першого суперника: {rival_1_cards_sum}")
+        print(f"Поточна сума Другого суперника: {rival_2_cards_sum}")
+
+    stop = input("Бажаєте додати ще карти? (y/n): ").lower()
+    if stop == 'n':
+        break
