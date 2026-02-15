@@ -1,9 +1,10 @@
 from getextracard import GetExtraCard
 from valueconverter import value_converter
-from usedcardcounter import used_cards_counter as used_cards, remaining_cards
+from usedcardcounter import UsedTracker
 from countsystem import count_system, actual_score
 
 
+num_decks = int(input("Введіть кількість колод - "))
 #Значення карт суперників, якщо їх нема
 rival_1_card1, rival_1_card2 = None, None
 rival_2_card1, rival_2_card2 = None, None
@@ -26,15 +27,14 @@ all_cards = [
 cards_to_count = [card for card in all_cards if card is not None]
 
 #Контроль карт, які вже були використані в грі
+tracker = UsedTracker(num_decks)
 print("="*12,"Дані гри","="*12)
-used_cards_state = used_cards(*cards_to_count)
-print("Список карт які були використані: ", used_cards_state)
-remain_cards = remaining_cards(used_cards_state)
-print("Кількість карт, які залишилися: ", remain_cards)
+print("Список карт які були використані: ", tracker.update(*cards_to_count))
+print("Кількість карт, які залишилися: ", tracker.remaining_cards)
 
 #Розрахунок карт
 current_score = count_system(*cards_to_count)
-true_score = actual_score(current_score, remain_cards)
+true_score = actual_score(current_score, tracker.remaining_cards)
 print("Справжній рахунок: ", true_score)
 
 # Буде конвертувати змінні в int
@@ -102,6 +102,8 @@ while True:
         
     if rival_2_cards_sum is not None:
         print(f"Поточна сума Другого суперника: {rival_2_cards_sum}")
+
+
 
     stop = input("Бажаєте додати ще карти? (y/n): ").lower()
     if stop == 'n':
