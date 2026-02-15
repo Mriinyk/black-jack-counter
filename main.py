@@ -65,8 +65,9 @@ def sum_of_own_cards(card_1: int, card_2: int) -> int:
     return current_sum
 
 own_cards_sum = sum_of_own_cards(your_card_1, your_card_2)
-rival_1_cards_sum = sum_of_own_cards(rival_1_card1, rival_1_card2) if rival_1_card1 is not None else "Немає гравця"
-rival_2_cards_sum = sum_of_own_cards(rival_2_card1, rival_2_card2) if rival_2_card1 is not None else "Немає гравця"
+# Замість "Немає гравця" використовуємо справжній None
+rival_1_cards_sum = sum_of_own_cards(rival_1_card1, rival_1_card2) if rival_1_card1 is not None else None
+rival_2_cards_sum = sum_of_own_cards(rival_2_card1, rival_2_card2) if rival_2_card1 is not None else None
 
 print("="*12,"Суми карт","="*12)
 print(f"Сума ваших карт: - {own_cards_sum}")
@@ -82,20 +83,24 @@ while True:
     own_exra = GetExtraCard(own_extra_cards, own_cards_sum)
     own_cards_sum = own_exra.calculate_new_sum()
 
-    if rival_1_cards_sum != None:
+    if rival_1_cards_sum is not None:
         rival_1_extra_cards = input(f"Введіть додаткові карти Суперника 1 (для пропуску натисніть Enter): ").split()
         rival_1_extra = GetExtraCard(rival_1_extra_cards, rival_1_cards_sum)
         rival_1_cards_sum = rival_1_extra.calculate_new_sum()
 
+    if rival_2_cards_sum is not None:
         rival_2_extra_cards = input(f"Введіть додаткові карти Суперника 2 (для пропуску натисніть Enter): ").split()
         rival_2_extra = GetExtraCard(rival_2_extra_cards, rival_2_cards_sum)
         rival_2_cards_sum = rival_2_extra.calculate_new_sum()
 
 
-    print("="*12,"Оновлені дані гри","="*12)
+    print("="*12, "Оновлені дані гри", "="*12)
     print(f"Ваша поточна сума: {own_cards_sum}")
-    if rival_1_cards_sum:
+    
+    if rival_1_cards_sum is not None:
         print(f"Поточна сума Першого суперника: {rival_1_cards_sum}")
+        
+    if rival_2_cards_sum is not None:
         print(f"Поточна сума Другого суперника: {rival_2_cards_sum}")
 
     stop = input("Бажаєте додати ще карти? (y/n): ").lower()
