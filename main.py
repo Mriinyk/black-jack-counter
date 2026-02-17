@@ -95,6 +95,14 @@ while True:
 
 
     print("="*12, "Оновлені дані гри", "="*12)
+
+    print("Список карт які були використані: ",
+          tracker.update(*own_extra_cards,
+                         *rival_1_extra_cards,
+                         *rival_2_extra_cards))
+
+    
+
     print(f"Ваша поточна сума: {own_cards_sum}")
     
     if rival_1_cards_sum is not None:
