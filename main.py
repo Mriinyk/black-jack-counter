@@ -1,9 +1,10 @@
 from getextracard import GetExtraCard
 from valueconverter import value_converter
-from usedcardcounter import used_cards_counter as used_cards, remaining_cards
-from countsystem import count_system, actual_score
+from usedcardcounter import UsedTracker
+from countsystem import CountSystem
 
 
+num_decks = int(input("Введіть кількість колод - "))
 #Значення карт суперників, якщо їх нема
 rival_1_card1, rival_1_card2 = None, None
 rival_2_card1, rival_2_card2 = None, None
@@ -11,9 +12,9 @@ rival_2_card1, rival_2_card2 = None, None
 # Вхідні змінні
 first_card_croupier = input("Введіть карту круп'є - ")
 your_card_1, your_card_2 = input("Введіть свої карти через пробіл - ").split()
-play_with_rivals = str(input("Ви граєте з суперниками ? - ")).lower().strip()
+play_with_rivals = str(input("Ви граєте з суперниками ? (y/n) - ")).lower().strip()
 
-if play_with_rivals == "так":
+if play_with_rivals == "y":
     print("="*12,"Вхідні дані суперників","="*12)
     rival_1_card1, rival_1_card2 = input("Введіть карти свого першого суперника через пробіл - ").split()
     rival_2_card1, rival_2_card2 = input("Введіть карти свого другого суперника через пробіл - ").split()
@@ -26,16 +27,15 @@ all_cards = [
 cards_to_count = [card for card in all_cards if card is not None]
 
 #Контроль карт, які вже були використані в грі
+tracker = UsedTracker(num_decks)
 print("="*12,"Дані гри","="*12)
-used_cards_state = used_cards(*cards_to_count)
-print("Список карт які були використані: ", used_cards_state)
-remain_cards = remaining_cards(used_cards_state)
-print("Кількість карт, які залишилися: ", remain_cards)
+print("Список карт які були використані: ", tracker.update(*cards_to_count))
+print("Кількість карт, які залишилися: ", tracker.remaining_cards)
 
 #Розрахунок карт
-current_score = count_system(*cards_to_count)
-true_score = actual_score(current_score, remain_cards)
-print("Справжній рахунок: ", true_score)
+score = CountSystem()
+score.count_current_score(*cards_to_count)
+print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
 
 # Буде конвертувати змінні в int
 all_cards_list = value_converter(cards_to_count)
@@ -77,7 +77,7 @@ if rival_1_card1 != None:
 
 #Логіка додавання карт
 print("="*12,"Роздача додаткових карт","="*12)
-
+# Цикл який приймає інпути додаткових карт, рахує нову суму карт
 while True:
     own_extra_cards = input(f"Введіть ваші додаткові карту (для пропуску натисніть Enter): ").split()
     own_exra = GetExtraCard(own_extra_cards, own_cards_sum)
@@ -93,8 +93,29 @@ while True:
         rival_2_extra = GetExtraCard(rival_2_extra_cards, rival_2_cards_sum)
         rival_2_cards_sum = rival_2_extra.calculate_new_sum()
 
-
+#Вивід оновлених даних гри з урахуванням 1 чи 3 гравця
     print("="*12, "Оновлені дані гри", "="*12)
+    if rival_1_cards_sum is not None and rival_2_cards_sum is not None:
+        print("Список карт які були використані: ",
+          tracker.update(*own_extra_cards,
+                         *rival_1_extra_cards,
+                         *rival_2_extra_cards))
+        
+        score.count_current_score(*own_extra_cards,
+                                  *rival_1_extra_cards,
+                                  *rival_2_extra_cards)
+        print("Кількість карт, які залишилися: ", tracker.remaining_cards)
+        print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
+    else:
+        print("Список карт які були використані: ",
+          tracker.update(*own_extra_cards))
+
+        score.count_current_score(*own_extra_cards)
+        print("Кількість карт, які залишилися: ", tracker.remaining_cards)
+        print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
+
+#Виводить оновлені суми карт
+    print("="*12, "Оновлені суми карт", "="*12)
     print(f"Ваша поточна сума: {own_cards_sum}")
     
     if rival_1_cards_sum is not None:
@@ -102,6 +123,8 @@ while True:
         
     if rival_2_cards_sum is not None:
         print(f"Поточна сума Другого суперника: {rival_2_cards_sum}")
+
+
 
     stop = input("Бажаєте додати ще карти? (y/n): ").lower()
     if stop == 'n':
