@@ -1,5 +1,5 @@
 #Клас, який приймає список з додатковими картами, конвертує їх в int та перевіряє на тузи. Повертає нову суму карт.
-from valueconverter import value_converter
+from valueconverter import value_converter as converter
 
 
 class GetExtraCard:
@@ -7,13 +7,8 @@ class GetExtraCard:
         self.extra_cards = extra_cards
         self.sum_of_cards = sum_of_cards
 
-    @staticmethod
-    def converter(extra_cards: list) -> list[int]:
-        converted_extra = value_converter(extra_cards)
-        return converted_extra
-
     def calculate_new_sum(self) -> int:
-        converted_cards = self.converter(self.extra_cards)
+        converted_cards = converter(self.extra_cards)
         iterator = iter(converted_cards)
         for card in iterator:
             self.sum_of_cards += card
