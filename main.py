@@ -1,30 +1,37 @@
+from getfirstcards import GetFirstCards
 from getextracard import GetExtraCard
-from valueconverter import value_converter
 from usedcardcounter import UsedTracker
 from countsystem import CountSystem
 
-
+#Вхідні дані колод
 num_decks = int(input("Введіть кількість колод - "))
 #Значення карт суперників, якщо їх нема
-rival_1_card1, rival_1_card2 = None, None
-rival_2_card1, rival_2_card2 = None, None
+rival_1_cards = []
+rival_2_cards = []
 
 # Вхідні змінні
-first_card_croupier = input("Введіть карту круп'є - ")
-your_card_1, your_card_2 = input("Введіть свої карти через пробіл - ").split()
+your_cards = input("Введіть свої карти через пробіл - ").split()
+your_first_cards = GetFirstCards(your_cards)
 play_with_rivals = str(input("Ви граєте з суперниками ? (y/n) - ")).lower().strip()
 
 if play_with_rivals == "y":
     print("="*12,"Вхідні дані суперників","="*12)
-    rival_1_card1, rival_1_card2 = input("Введіть карти свого першого суперника через пробіл - ").split()
-    rival_2_card1, rival_2_card2 = input("Введіть карти свого другого суперника через пробіл - ").split()
+    rival_1_cards = input("Введіть карти свого першого суперника через пробіл - ").split()
+    rival_1_first_cards = GetFirstCards(rival_1_cards)
+    rival_2_cards = input("Введіть карти свого другого суперника через пробіл - ").split()
+    rival_2_first_cards = GetFirstCards(rival_2_cards)
 
-#Фільтрація карт, включаючи можливі None
-all_cards = [
-    first_card_croupier, your_card_1, your_card_2, 
-    rival_1_card1, rival_1_card2, rival_2_card1, rival_2_card2
-]
-cards_to_count = [card for card in all_cards if card is not None]
+card_of_croupier = input("Введіть карту круп'є - ").split()
+first_card_croupier = GetFirstCards(card_of_croupier)
+
+#Список усіх перших карт
+cards_to_count = []
+cards_to_count.extend(your_cards)
+cards_to_count.extend(card_of_croupier)
+if rival_1_cards:
+    cards_to_count.extend(rival_1_cards)
+if rival_2_cards:
+    cards_to_count.extend(rival_2_cards)
 
 #Контроль карт, які вже були використані в грі
 tracker = UsedTracker(num_decks)
@@ -37,42 +44,18 @@ score = CountSystem()
 score.count_current_score(*cards_to_count)
 print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
 
-# Буде конвертувати змінні в int
-all_cards_list = value_converter(cards_to_count)
-first_card_croupier, your_card_1, your_card_2 = all_cards_list[:3]
-
-if len(all_cards_list) > 3:
-    rival_1_card1, rival_1_card2, rival_2_card1, rival_2_card2 = all_cards_list[3:7]
-
-print("="*12,"Значення кожної карти","="*12)
-print("Карта круп'є: - ", first_card_croupier)
-print("Ваша перша карта: - ", your_card_1)
-print("Ваша друга карта: - ", your_card_2)
-if rival_1_card1 != None:
-    print("Перший суперник, карта 1: - ", rival_1_card1)
-    print("Перший суперник, карта 2: - ", rival_1_card2)
-    print("Другий суперник, карта 1: - ", rival_2_card1)
-    print("Другий суперник, карта 2: - ", rival_2_card2)
-
-
-#Розрахунок власних карт з урахуванням "А" 1, або 11
-def sum_of_own_cards(card_1: int, card_2: int) -> int:
-    current_sum = card_1 + card_2
-    if current_sum > 21 and card_1 == 11:
-        current_sum -= 10 # 22 -> 12
-    if current_sum > 21 and card_2 == 11:
-        current_sum -= 10 # 22 -> 12
-    return current_sum
-
-own_cards_sum = sum_of_own_cards(your_card_1, your_card_2)
-# Замість "Немає гравця" використовуємо справжній None
-rival_1_cards_sum = sum_of_own_cards(rival_1_card1, rival_1_card2) if rival_1_card1 is not None else None
-rival_2_cards_sum = sum_of_own_cards(rival_2_card1, rival_2_card2) if rival_2_card1 is not None else None
+#Підрахунок суми карт
+own_cards_sum = your_first_cards.calculate_sum()
+if rival_1_cards:
+    rival_1_cards_sum = rival_1_first_cards.calculate_sum()
+if rival_2_cards:
+    rival_2_cards_sum = rival_2_first_cards.calculate_sum()
 
 print("="*12,"Суми карт","="*12)
 print(f"Сума ваших карт: - {own_cards_sum}")
-if rival_1_card1 != None:
+if rival_1_cards:
     print(f"Сума карт першого суперника: - {rival_1_cards_sum}")
+if rival_2_cards:
     print(f"Сума карт другого суперника: - {rival_2_cards_sum}")
 
 #Логіка додавання карт
@@ -83,48 +66,43 @@ while True:
     own_exra = GetExtraCard(own_extra_cards, own_cards_sum)
     own_cards_sum = own_exra.calculate_new_sum()
 
-    if rival_1_cards_sum is not None:
+    if rival_1_cards:
         rival_1_extra_cards = input(f"Введіть додаткові карти Суперника 1 (для пропуску натисніть Enter): ").split()
         rival_1_extra = GetExtraCard(rival_1_extra_cards, rival_1_cards_sum)
         rival_1_cards_sum = rival_1_extra.calculate_new_sum()
 
-    if rival_2_cards_sum is not None:
+    if rival_2_cards:
         rival_2_extra_cards = input(f"Введіть додаткові карти Суперника 2 (для пропуску натисніть Enter): ").split()
         rival_2_extra = GetExtraCard(rival_2_extra_cards, rival_2_cards_sum)
         rival_2_cards_sum = rival_2_extra.calculate_new_sum()
 
-#Вивід оновлених даних гри з урахуванням 1 чи 3 гравця
+    #Вивід оновлених даних гри з урахуванням 1 чи більше гравців
     print("="*12, "Оновлені дані гри", "="*12)
-    if rival_1_cards_sum is not None and rival_2_cards_sum is not None:
-        print("Список карт які були використані: ",
-          tracker.update(*own_extra_cards,
-                         *rival_1_extra_cards,
-                         *rival_2_extra_cards))
-        
-        score.count_current_score(*own_extra_cards,
-                                  *rival_1_extra_cards,
-                                  *rival_2_extra_cards)
-        print("Кількість карт, які залишилися: ", tracker.remaining_cards)
-        print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
-    else:
-        print("Список карт які були використані: ",
-          tracker.update(*own_extra_cards))
+    all_active_extra = []
+    all_active_extra.extend(own_extra_cards)
 
-        score.count_current_score(*own_extra_cards)
-        print("Кількість карт, які залишилися: ", tracker.remaining_cards)
-        print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
+    if rival_1_cards:
+        all_active_extra.extend(rival_1_extra_cards)
+    if rival_2_cards:
+        all_active_extra.extend(rival_2_extra_cards)
 
-#Виводить оновлені суми карт
+    used_extra_cards= tracker.update(*all_active_extra)
+    score.count_current_score(*all_active_extra)
+
+    #Виводимо результат (один блок для всіх сценаріїв)
+    print("Список карт які були використані: ", used_extra_cards)
+    print("Кількість карт, які залишилися: ", tracker.remaining_cards)
+    print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
+
+    #Виводить оновлені суми карт
     print("="*12, "Оновлені суми карт", "="*12)
     print(f"Ваша поточна сума: {own_cards_sum}")
     
-    if rival_1_cards_sum is not None:
+    if rival_1_cards:
         print(f"Поточна сума Першого суперника: {rival_1_cards_sum}")
         
-    if rival_2_cards_sum is not None:
+    if rival_2_cards:
         print(f"Поточна сума Другого суперника: {rival_2_cards_sum}")
-
-
 
     stop = input("Бажаєте додати ще карти? (y/n): ").lower()
     if stop == 'n':
