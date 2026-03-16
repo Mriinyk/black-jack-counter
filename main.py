@@ -107,3 +107,28 @@ while True:
     stop = input("Бажаєте додати ще карти? (y/n): ").lower()
     if stop == 'n':
         break
+
+#Ввід додаткових карт круп'є
+croupier_extra_cards = input(f"Введіть відкриту та додаткові карти круп'є: ").split()
+croupier_cards_sum = first_card_croupier.calculate_sum()
+croupier_extra = GetExtraCard(croupier_extra_cards, croupier_cards_sum)
+croupier_cards_sum = croupier_extra.calculate_new_sum()
+
+#Вивід фінальної інформації
+print("="*12, "Фінальні дані гри", "="*12)
+
+used_croupier_cards = tracker.update(*croupier_extra_cards)
+score.count_current_score(*croupier_extra_cards)
+
+print("Список карт які були використані: ", used_croupier_cards)
+print("Кількість карт, які залишилися: ", tracker.remaining_cards)
+print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
+
+print(f"Фінальна сума карт круп'є: {croupier_cards_sum}")
+print(f"Ваша поточна сума: {own_cards_sum}")
+    
+if rival_1_cards:
+    print(f"Поточна сума Першого суперника: {rival_1_cards_sum}")
+        
+if rival_2_cards:
+    print(f"Поточна сума Другого суперника: {rival_2_cards_sum}")
