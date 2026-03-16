@@ -124,11 +124,12 @@ print("Список карт які були використані: ", used_cro
 print("Кількість карт, які залишилися: ", tracker.remaining_cards)
 print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
 
+print("="*12, "Фінальні суми карт", "="*12)
 print(f"Фінальна сума карт круп'є: {croupier_cards_sum}")
-print(f"Ваша поточна сума: {own_cards_sum}")
+print(f"Ваша сума: {own_cards_sum}")
     
 if rival_1_cards:
-    print(f"Поточна сума Першого суперника: {rival_1_cards_sum}")
+    print(f"Сума Першого суперника: {rival_1_cards_sum}")
         
 if rival_2_cards:
-    print(f"Поточна сума Другого суперника: {rival_2_cards_sum}")
+    print(f"Сума Другого суперника: {rival_2_cards_sum}")
