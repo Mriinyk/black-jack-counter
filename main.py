@@ -17,9 +17,9 @@ while True:
     rival_2_cards = []
 
     # Вхідні змінні
+    play_with_rivals = str(input("Ви граєте з суперниками ? (y/n) - ")).lower().strip()
     your_cards = input("Введіть свої карти через пробіл - ").split()
     your_first_cards = GetFirstCards(your_cards)
-    play_with_rivals = str(input("Ви граєте з суперниками ? (y/n) - ")).lower().strip()
 
     if play_with_rivals == "y":
         print("="*12,"Вхідні дані суперників","="*12)
@@ -44,6 +44,7 @@ while True:
     print("="*12,"Дані гри","="*12)
     print("Список карт які були використані: ", tracker.update(*cards_to_count))
     print("Кількість карт, які залишилися: ", tracker.remaining_cards)
+    print("Відсотки випадання наступних карт: ", tracker.percentage_of_cards)
 
     #Розрахунок карт
     score.count_current_score(*cards_to_count)
@@ -97,6 +98,7 @@ while True:
         #Виводимо результат (один блок для всіх сценаріїв)
         print("Список карт які були використані: ", used_extra_cards)
         print("Кількість карт, які залишилися: ", tracker.remaining_cards)
+        print("Відсотки випадання наступних карт: ", tracker.percentage_of_cards)
         print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
 
         #Виводить оновлені суми карт
@@ -127,6 +129,7 @@ while True:
 
     print("Список карт які були використані: ", used_croupier_cards)
     print("Кількість карт, які залишилися: ", tracker.remaining_cards)
+    print("Відсотки випадання наступних карт: ", tracker.percentage_of_cards)
     print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
 
     print("="*12, "Фінальні суми карт", "="*12)
@@ -139,8 +142,21 @@ while True:
     if rival_2_cards:
         print(f"Сума Другого суперника: {rival_2_cards_sum}")
 
+#Перевірка на автоматичне перетасування (якщо залишилось менше 20% карт)
+    if tracker.remaining_cards < (num_decks * 52 * 0.2):
+        print("Увага: в колоді залишилося мало карт! Можливе перетасування.")
+
+#Запит на продовження гри та перетасовку карт
     exit_game = input("Бажаєте почати наступний раунд? (y/n): ").lower().strip()
+    shuffling_cards = input("Чи круп'є перетасовує карти? (y/n): ").lower().strip()
+
     if exit_game == 'n':
         break
+
+#Обнулення статистичних даних
+    if shuffling_cards == 'y':
+        tracker = UsedTracker(num_decks)
+        score = CountSystem()
+        print("Карти перетасовано! Статистику обнулено.")
     else:
         print("="*20, "ПОЧАТОК НОВОГО РАУНДУ", "="*20)

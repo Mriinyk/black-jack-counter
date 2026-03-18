@@ -27,5 +27,9 @@ class CountSystem:
         return self.current_score
 
     def true_score(self, remain_cards: int) -> float:
-        actual_score = (self.current_score * 52) / remain_cards
+        try:
+            actual_score = (self.current_score * 52) / remain_cards
+        except ZeroDivisionError:
+            return "Карти закінчилися"
+
         return round(actual_score, 2)
