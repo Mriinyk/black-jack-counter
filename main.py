@@ -154,7 +154,7 @@ while True:
         break
 
 #Обнулення статистичних даних
-    if shuffling_cards == 'y':
+    if shuffling_cards == 'y' or tracker.remaining_cards <= 0:
         tracker = UsedTracker(num_decks)
         score = CountSystem()
         print("Карти перетасовано! Статистику обнулено.")
