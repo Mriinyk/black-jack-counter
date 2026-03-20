@@ -14,4 +14,3 @@ class GetFirstCards:
                 first_cards_sum -= 10
 
         return first_cards_sum
-

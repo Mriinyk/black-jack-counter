@@ -9,8 +9,7 @@ class GetExtraCard:
 
     def calculate_new_sum(self) -> int:
         converted_cards = converter(self.extra_cards)
-        iterator = iter(converted_cards)
-        for card in iterator:
+        for card in converted_cards:
             self.sum_of_cards += card
             if self.sum_of_cards > 21 and card == 11:
                 self.sum_of_cards -= 10
