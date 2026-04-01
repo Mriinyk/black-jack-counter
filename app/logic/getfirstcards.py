@@ -1,4 +1,4 @@
-from valueconverter import value_converter as converter
+from app.logic.valueconverter import value_converter as converter
 
 
 class GetFirstCards:
