@@ -2,6 +2,11 @@ from app.logic.getfirstcards import GetFirstCards
 from app.logic.getextracard import GetExtraCard
 from app.logic.usedcardcounter import UsedTracker
 from app.logic.countsystem import CountSystem
+from prettytable import PrettyTable
+
+
+#Об'єкт таблиці(інтерфейсу) та налаштування вікон
+table = PrettyTable()
 
 #Вхідні дані колод
 num_decks = int(input("Введіть кількість колод - "))
@@ -41,14 +46,36 @@ while True:
         cards_to_count.extend(rival_2_cards)
 
     #Контроль карт, які вже були використані в грі
-    print("="*12,"Дані гри","="*12)
-    print("Список карт які були використані: ", tracker.update(*cards_to_count))
-    print("Кількість карт, які залишилися: ", tracker.remaining_cards)
-    print("Відсотки випадання наступних карт: ", tracker.percentage_of_cards)
+
+    used_cards_list_for_print = tracker.update(*cards_to_count)
 
     #Розрахунок карт
     score.count_current_score(*cards_to_count)
-    print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
+    true_count = score.true_score(tracker.remaining_cards)
+
+    #Таблиця виводу даних
+    table.title = "Дані гри"
+    table.field_names = [
+        "Список карт які були використані",
+        "Кількість карт, які залишилися",
+        "Відсотки випадання наступних карт",
+
+    ]
+
+    table.add_row(
+        [
+            used_cards_list_for_print,
+            tracker.remaining_cards,
+            tracker.percentage_of_cards
+        ]
+    )
+
+    table.add_row(["", f"Справжній рахунок: {true_count}", ""])
+
+    table.max_width = 50
+    table.hrules = 1
+    print(table)
+
 
     #Підрахунок суми карт
     own_cards_sum = your_first_cards.calculate_sum()
@@ -157,6 +184,7 @@ while True:
     if shuffling_cards == 'y' or tracker.remaining_cards <= 0:
         tracker = UsedTracker(num_decks)
         score = CountSystem()
+        table = PrettyTable()
         print("Карти перетасовано! Статистику обнулено.")
     else:
         print("="*20, "ПОЧАТОК НОВОГО РАУНДУ", "="*20)
