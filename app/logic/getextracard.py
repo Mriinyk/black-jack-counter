@@ -1,5 +1,5 @@
 #Клас, який приймає список з додатковими картами, конвертує їх в int та перевіряє на тузи. Повертає нову суму карт.
-from valueconverter import value_converter as converter
+from app.logic.valueconverter import value_converter as converter
 
 
 class GetExtraCard:

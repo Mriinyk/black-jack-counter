@@ -1,7 +1,7 @@
-from getfirstcards import GetFirstCards
-from getextracard import GetExtraCard
-from usedcardcounter import UsedTracker
-from countsystem import CountSystem
+from app.logic.getfirstcards import GetFirstCards
+from app.logic.getextracard import GetExtraCard
+from app.logic.usedcardcounter import UsedTracker
+from app.logic.countsystem import CountSystem
 
 #Вхідні дані колод
 num_decks = int(input("Введіть кількість колод - "))
