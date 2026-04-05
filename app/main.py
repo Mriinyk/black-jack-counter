@@ -1,3 +1,4 @@
+import os
 import colorama
 from colorama import Fore
 from app.logic.getfirstcards import GetFirstCards
@@ -11,9 +12,6 @@ from prettytable import PrettyTable
 colorama.init()
 print(Fore.GREEN, end="")
 
-#Об'єкт таблиці(інтерфейсу) та налаштування вікон
-table = PrettyTable()
-
 #Вхідні дані колод
 num_decks = int(input("Введіть кількість колод - "))
 
@@ -23,6 +21,10 @@ score = CountSystem()
 
 #Цикл гри
 while True:
+
+    #Об'єкт таблиці(інтерфейсу) та налаштування вікон
+    table = PrettyTable()
+
     #Значення карт суперників, якщо їх нема
     rival_1_cards = []
     rival_2_cards = []
@@ -64,8 +66,7 @@ while True:
     table.field_names = [
         "Список карт які були використані",
         "Кількість карт, які залишилися",
-        "Відсотки випадання наступних карт",
-
+        "Відсотки випадання наступних карт"
     ]
 
     table.add_row(
@@ -82,7 +83,6 @@ while True:
     table.hrules = 1
     print(table)
 
-
     #Підрахунок суми карт
     own_cards_sum = your_first_cards.calculate_sum()
     if rival_1_cards:
@@ -90,12 +90,44 @@ while True:
     if rival_2_cards:
         rival_2_cards_sum = rival_2_first_cards.calculate_sum()
 
+
+    #Таблиця для сумкарт
+    sums_table = PrettyTable()
+    sums_table.title = "Суми карт"
+
+    headers = ["Сума ваших карт"]
+    rows = [own_cards_sum]
+
+    if rival_1_cards:
+        headers.append("Сума карт першого суперника")
+        rows.append(rival_1_cards_sum)
+    if rival_2_cards:
+        headers.append("Сума карт другого суперника")
+        rows.append(rival_2_cards_sum)
+
+    sums_table.field_names = headers
+    sums_table.add_row(rows)
+
+    sums_table.max_width = 50
+    sums_table.hrules = 1
+    print(sums_table)
+
+
+
     print("="*12,"Суми карт","="*12)
     print(f"Сума ваших карт: - {own_cards_sum}")
     if rival_1_cards:
         print(f"Сума карт першого суперника: - {rival_1_cards_sum}")
     if rival_2_cards:
         print(f"Сума карт другого суперника: - {rival_2_cards_sum}")
+
+
+
+
+
+
+
+
 
     #Логіка додавання карт
     print("="*12,"Роздача додаткових карт","="*12)
@@ -190,7 +222,13 @@ while True:
     if shuffling_cards == 'y' or tracker.remaining_cards <= 0:
         tracker = UsedTracker(num_decks)
         score = CountSystem()
-        table = PrettyTable()
+
+        # Очищуємо термінал
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         print("Карти перетасовано! Статистику обнулено.")
     else:
+        # Очищуємо термінал
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         print("="*20, "ПОЧАТОК НОВОГО РАУНДУ", "="*20)
