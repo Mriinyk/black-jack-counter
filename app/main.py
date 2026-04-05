@@ -1,9 +1,15 @@
+import colorama
+from colorama import Fore
 from app.logic.getfirstcards import GetFirstCards
 from app.logic.getextracard import GetExtraCard
 from app.logic.usedcardcounter import UsedTracker
 from app.logic.countsystem import CountSystem
 from prettytable import PrettyTable
 
+
+#Налаштування кольору інтерфейсу
+colorama.init()
+print(Fore.GREEN, end="")
 
 #Об'єкт таблиці(інтерфейсу) та налаштування вікон
 table = PrettyTable()
