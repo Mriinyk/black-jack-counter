@@ -24,6 +24,7 @@ while True:
 
     #Об'єкт таблиці(інтерфейсу) та налаштування вікон
     table = PrettyTable()
+    sums_table = PrettyTable()
 
     #Значення карт суперників, якщо їх нема
     rival_1_cards = []
@@ -43,6 +44,7 @@ while True:
 
     card_of_croupier = input("Введіть карту круп'є - ").split()
     first_card_croupier = GetFirstCards(card_of_croupier)
+    croupier_cards_sum = first_card_croupier.calculate_sum()
 
     #Список усіх перших карт
     cards_to_count = []
@@ -60,6 +62,7 @@ while True:
     #Розрахунок карт
     score.count_current_score(*cards_to_count)
     true_count = score.true_score(tracker.remaining_cards)
+
 
     #Таблиця виводу даних
     table.title = "Дані гри"
@@ -82,6 +85,8 @@ while True:
     table.max_width = 50
     table.hrules = 1
     print(table)
+    table.clear_rows()
+
 
     #Підрахунок суми карт
     own_cards_sum = your_first_cards.calculate_sum()
@@ -92,11 +97,10 @@ while True:
 
 
     #Таблиця для сумкарт
-    sums_table = PrettyTable()
     sums_table.title = "Суми карт"
 
-    headers = ["Сума ваших карт"]
-    rows = [own_cards_sum]
+    headers = ["Сума ваших карт", "Cума карт круп'є"]
+    rows = [own_cards_sum, croupier_cards_sum]
 
     if rival_1_cards:
         headers.append("Сума карт першого суперника")
@@ -111,22 +115,7 @@ while True:
     sums_table.max_width = 50
     sums_table.hrules = 1
     print(sums_table)
-
-
-
-    print("="*12,"Суми карт","="*12)
-    print(f"Сума ваших карт: - {own_cards_sum}")
-    if rival_1_cards:
-        print(f"Сума карт першого суперника: - {rival_1_cards_sum}")
-    if rival_2_cards:
-        print(f"Сума карт другого суперника: - {rival_2_cards_sum}")
-
-
-
-
-
-
-
+    sums_table.clear_rows()
 
 
     #Логіка додавання карт
@@ -148,7 +137,6 @@ while True:
             rival_2_cards_sum = rival_2_extra.calculate_new_sum()
 
         #Вивід оновлених даних гри з урахуванням 1 чи більше гравців
-        print("="*12, "Оновлені дані гри", "="*12)
         all_active_extra = []
         all_active_extra.extend(own_extra_cards)
 
@@ -159,22 +147,43 @@ while True:
 
         used_extra_cards= tracker.update(*all_active_extra)
         score.count_current_score(*all_active_extra)
+        true_count = score.true_score(tracker.remaining_cards)
 
-        #Виводимо результат (один блок для всіх сценаріїв)
-        print("Список карт які були використані: ", used_extra_cards)
-        print("Кількість карт, які залишилися: ", tracker.remaining_cards)
-        print("Відсотки випадання наступних карт: ", tracker.percentage_of_cards)
-        print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
+        #Таблиця оновлених даних
+        table.title = "Оновлені дані гри"
+        table.add_row(
+            [
+                used_extra_cards,
+                tracker.remaining_cards,
+                tracker.percentage_of_cards
+            ]
+        )
 
-        #Виводить оновлені суми карт
-        print("="*12, "Оновлені суми карт", "="*12)
-        print(f"Ваша поточна сума: {own_cards_sum}")
-        
+        table.add_row(["", f"Справжній рахунок: {true_count}", ""])
+
+        table.max_width = 50
+        table.hrules = 1
+        print(table)
+        table.clear_rows()
+
+
+        #Виводить таблицю оновлених сум карт
+
+        sums_table.title =  "Оновлені суми карт"
+
+        rows = [own_cards_sum, croupier_cards_sum]
+
         if rival_1_cards:
-            print(f"Поточна сума Першого суперника: {rival_1_cards_sum}")
-            
+            rows.append(rival_1_cards_sum)
         if rival_2_cards:
-            print(f"Поточна сума Другого суперника: {rival_2_cards_sum}")
+            rows.append(rival_2_cards_sum)
+
+        sums_table.add_row(rows)
+
+        sums_table.max_width = 50
+        sums_table.hrules = 1
+        print(sums_table)
+        sums_table.clear_rows()
 
         stop = input("Бажаєте додати ще карти? (y/n): ").lower()
         if stop == 'n':
@@ -191,21 +200,43 @@ while True:
 
     used_croupier_cards = tracker.update(*croupier_extra_cards)
     score.count_current_score(*croupier_extra_cards)
+    true_count = score.true_score(tracker.remaining_cards)
 
-    print("Список карт які були використані: ", used_croupier_cards)
-    print("Кількість карт, які залишилися: ", tracker.remaining_cards)
-    print("Відсотки випадання наступних карт: ", tracker.percentage_of_cards)
-    print("Справжній рахунок: ", score.true_score(tracker.remaining_cards))
+    #Вивід таблиці фінальних даних гри
+    table.title = "Фінальні дані гри"
 
-    print("="*12, "Фінальні суми карт", "="*12)
-    print(f"Фінальна сума карт круп'є: {croupier_cards_sum}")
-    print(f"Ваша сума: {own_cards_sum}")
-        
+    table.add_row(
+            [
+                used_extra_cards,
+                tracker.remaining_cards,
+                tracker.percentage_of_cards
+            ]
+        )
+
+    table.add_row(["", f"Справжній рахунок: {true_count}", ""])
+
+    table.max_width = 50
+    table.hrules = 1
+    print(table)
+    table.clear_rows()
+
+    #Вивід таблиці фінальних сум карт
+    sums_table.title = "Фінальні суми карт"
+
+    rows = [own_cards_sum, croupier_cards_sum]
+
     if rival_1_cards:
-        print(f"Сума Першого суперника: {rival_1_cards_sum}")
-            
+        rows.append(rival_1_cards_sum)
     if rival_2_cards:
-        print(f"Сума Другого суперника: {rival_2_cards_sum}")
+        rows.append(rival_2_cards_sum)
+
+    sums_table.add_row(rows)
+
+    sums_table.max_width = 50
+    sums_table.hrules = 1
+    print(sums_table)
+    sums_table.clear_rows()
+
 
 #Перевірка на автоматичне перетасування (якщо залишилось менше 20% карт)
     if tracker.remaining_cards < (num_decks * 52 * 0.2):
