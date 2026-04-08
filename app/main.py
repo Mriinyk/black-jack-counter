@@ -5,7 +5,7 @@ from app.logic.getfirstcards import GetFirstCards
 from app.logic.getextracard import GetExtraCard
 from app.logic.usedcardcounter import UsedTracker
 from app.logic.countsystem import CountSystem
-from prettytable import PrettyTable
+from prettytable import PrettyTable, TableStyle
 
 
 #Налаштування кольору інтерфейсу
@@ -24,7 +24,9 @@ while True:
 
     #Об'єкт таблиці(інтерфейсу) та налаштування вікон
     table = PrettyTable()
+    table.set_style(TableStyle.DOUBLE_BORDER)
     sums_table = PrettyTable()
+    sums_table.set_style(TableStyle.DOUBLE_BORDER)
 
     #Значення карт суперників, якщо їх нема
     rival_1_cards = []
