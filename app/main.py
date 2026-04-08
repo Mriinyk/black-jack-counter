@@ -86,6 +86,7 @@ while True:
 
     table.max_width = 50
     table.hrules = 1
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(table)
     table.clear_rows()
 
@@ -165,6 +166,7 @@ while True:
 
         table.max_width = 50
         table.hrules = 1
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(table)
         table.clear_rows()
 
@@ -219,6 +221,7 @@ while True:
 
     table.max_width = 50
     table.hrules = 1
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(table)
     table.clear_rows()
 
