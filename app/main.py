@@ -209,7 +209,7 @@ while True:
 
     table.add_row(
             [
-                used_extra_cards,
+                used_croupier_cards,
                 tracker.remaining_cards,
                 tracker.percentage_of_cards
             ]
