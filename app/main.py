@@ -5,7 +5,7 @@ from app.logic.getfirstcards import GetFirstCards
 from app.logic.getextracard import GetExtraCard
 from app.logic.usedcardcounter import UsedTracker
 from app.logic.countsystem import CountSystem
-from app.logo.printlogo import PrintLogo
+from app.ux_settings.uxsettings import PrintLogo, ColorForInfo
 from prettytable import PrettyTable, TableStyle
 
 
@@ -13,9 +13,10 @@ from prettytable import PrettyTable, TableStyle
 colorama.init()
 print(Fore.GREEN, end="")
 
-#Об'єкт логотипу програми
+#Об'єкти UX
 logo = PrintLogo()
 logo.print_app_logo()
+color_for_info = ColorForInfo()
 
 #Вхідні дані колод
 num_decks = int(input("Введіть кількість колод: "))
@@ -87,7 +88,8 @@ while True:
         ]
     )
 
-    table.add_row(["", f"Справжній рахунок: {true_count}", ""])
+    colored_count = color_for_info.color_for_true_count(true_count)
+    table.add_row(["", f"Справжній рахунок: {colored_count}", ""])
 
     table.max_width = 50
     table.hrules = 1
@@ -167,7 +169,8 @@ while True:
             ]
         )
 
-        table.add_row(["", f"Справжній рахунок: {true_count}", ""])
+        colored_count = color_for_info.color_for_true_count(true_count)
+        table.add_row(["", f"Справжній рахунок: {colored_count}", ""])
 
         table.max_width = 50
         table.hrules = 1
@@ -220,7 +223,8 @@ while True:
             ]
         )
 
-    table.add_row(["", f"Справжній рахунок: {true_count}", ""])
+    colored_count = color_for_info.color_for_true_count(true_count)
+    table.add_row(["", f"Справжній рахунок: {colored_count}", ""])
 
     table.max_width = 50
     table.hrules = 1
