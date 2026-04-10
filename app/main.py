@@ -34,17 +34,17 @@ while True:
 
     # Вхідні змінні
     play_with_rivals = str(input("Ви граєте з суперниками ? (y/n) - ")).lower().strip()
-    your_cards = input("Введіть свої карти через пробіл - ").split()
+    your_cards = input("Введіть свої карти через пробіл: ").split()
     your_first_cards = GetFirstCards(your_cards)
 
     if play_with_rivals == "y":
         print("="*12,"Вхідні дані суперників","="*12)
-        rival_1_cards = input("Введіть карти свого першого суперника через пробіл - ").split()
+        rival_1_cards = input("Введіть карти свого першого суперника через пробіл: ").split()
         rival_1_first_cards = GetFirstCards(rival_1_cards)
-        rival_2_cards = input("Введіть карти свого другого суперника через пробіл - ").split()
+        rival_2_cards = input("Введіть карти свого другого суперника через пробіл: ").split()
         rival_2_first_cards = GetFirstCards(rival_2_cards)
 
-    card_of_croupier = input("Введіть карту круп'є - ").split()
+    card_of_croupier = input("Введіть карту круп'є: ").split()
     first_card_croupier = GetFirstCards(card_of_croupier)
     croupier_cards_sum = first_card_croupier.calculate_sum()
 
@@ -125,7 +125,7 @@ while True:
     print("="*12,"Роздача додаткових карт","="*12)
     # Цикл який приймає інпути додаткових карт, рахує нову суму карт
     while True:
-        own_extra_cards = input(f"Введіть ваші додаткові карту (для пропуску натисніть Enter): ").split()
+        own_extra_cards = input(f"Введіть ваші додаткові карти (для пропуску натисніть Enter): ").split()
         own_exra = GetExtraCard(own_extra_cards, own_cards_sum)
         own_cards_sum = own_exra.calculate_new_sum()
 
