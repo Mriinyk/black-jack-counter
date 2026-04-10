@@ -5,6 +5,7 @@ from app.logic.getfirstcards import GetFirstCards
 from app.logic.getextracard import GetExtraCard
 from app.logic.usedcardcounter import UsedTracker
 from app.logic.countsystem import CountSystem
+from app.logo.printlogo import PrintLogo
 from prettytable import PrettyTable, TableStyle
 
 
@@ -12,8 +13,12 @@ from prettytable import PrettyTable, TableStyle
 colorama.init()
 print(Fore.GREEN, end="")
 
+#Об'єкт логотипу програми
+logo = PrintLogo()
+logo.print_app_logo()
+
 #Вхідні дані колод
-num_decks = int(input("Введіть кількість колод - "))
+num_decks = int(input("Введіть кількість колод: "))
 
 #Об'єкти статистики ПОЗА циклом
 tracker = UsedTracker(num_decks)
@@ -199,8 +204,6 @@ while True:
     croupier_extra = GetExtraCard(croupier_extra_cards, croupier_cards_sum)
     croupier_cards_sum = croupier_extra.calculate_new_sum()
 
-    #Вивід фінальної інформації
-    print("="*12, "Фінальні дані гри", "="*12)
 
     used_croupier_cards = tracker.update(*croupier_extra_cards)
     score.count_current_score(*croupier_extra_cards)
@@ -249,10 +252,14 @@ while True:
 
 #Запит на продовження гри та перетасовку карт
     exit_game = input("Бажаєте почати наступний раунд? (y/n): ").lower().strip()
-    shuffling_cards = input("Чи круп'є перетасовує карти? (y/n): ").lower().strip()
 
     if exit_game == 'n':
+        os.system('cls' if os.name == 'nt' else 'clear')
+        logo.print_app_logo()
+        print("Дякую що використовували програму!")
         break
+
+    shuffling_cards = input("Чи круп'є перетасовує карти? (y/n): ").lower().strip()
 
 #Обнулення статистичних даних
     if shuffling_cards == 'y' or tracker.remaining_cards <= 0:
