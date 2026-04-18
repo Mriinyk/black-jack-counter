@@ -22,7 +22,11 @@ class ColorForInfo:
             count_color = Fore.RED
         elif true_count < 2:
             count_color = Fore.WHITE
-        else:
+        elif true_count < 5:
             count_color = Fore.YELLOW
+        elif true_count < 10:
+            count_color = Fore.CYAN
+        else:
+            count_color = Fore.MAGENTA
         
         return f"{count_color}{true_count}{Fore.GREEN}"
