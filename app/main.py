@@ -260,7 +260,7 @@ while True:
     if exit_game == 'n':
         os.system('cls' if os.name == 'nt' else 'clear')
         logo.print_app_logo()
-        print("Дякую що використовували програму!")
+        print("Дякую, що використовували програму!")
         break
 
     shuffling_cards = input("Чи круп'є перетасовує карти? (y/n): ").lower().strip()
