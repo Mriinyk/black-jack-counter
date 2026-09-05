@@ -1,6 +1,11 @@
+import sys
 import os
 import colorama
 from colorama import Fore
+from pathlib import Path
+
+# Додаємо кореневу папку проекту до sys.path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from app.logic.getfirstcards import GetFirstCards
 from app.logic.getextracard import GetExtraCard
 from app.logic.usedcardcounter import UsedTracker
