@@ -14,7 +14,10 @@ class UsedTracker:
             card_upper = str(card).upper()
             if card_upper in self.used_cards:
                 self.used_cards[card_upper] += 1
-        return self.used_cards
+
+        used_cards_list = [f"{k}: {v}" for k, v in self.used_cards.items()]
+        used_cards_str = "\n".join(used_cards_list)
+        return used_cards_str
 
     @property
     def remaining_cards(self) -> int:
@@ -44,7 +47,10 @@ class UsedTracker:
             try:
                 percent_value = max(0, int(round((value / self.remaining_cards) * 100)))
                 percentage_of_cards_dict[key] = f"{percent_value}%"
+
+                percentage_of_cards_list = [f"{k}: {v}" for k, v in percentage_of_cards_dict.items()]
+                percentage_of_cards_str = "\n".join(percentage_of_cards_list)
             except ZeroDivisionError:
                 return "Карти закінчилися"
 
-        return percentage_of_cards_dict
+        return percentage_of_cards_str

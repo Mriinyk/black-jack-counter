@@ -1,2 +1,4 @@
 # Python cache directory
 __pycache__/
+.vscode/
+.env
