@@ -294,6 +294,7 @@ def main() -> None:
             os.system('cls' if os.name == 'nt' else 'clear')
             logo.print_app_logo()
             print("Дякую, що використовували програму!")
+            input("\nНатисніть Enter для виходу...")
             break
 
         shuffling_cards = input("Чи круп'є перетасовує карти? (y/n): ").lower().strip()

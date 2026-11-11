@@ -50,6 +50,23 @@ The project includes automated tests (pytest) for the counting logic:
 py -m pytest tests/ -v
 ```
 
+### Using the executable file (.exe)
+
+A ready-to-use `+21.exe` file is available in the project root for **Windows**. It does not require Python or any dependencies to be installed.
+
+**How to run:**
+
+```bash
++21.exe
+```
+
+The program is a console application. After finishing the game, press **Enter** to close the window.
+
+> ⚠️ The `.exe` file is built for Windows only. On Linux/macOS, run the Python source code:
+> ```bash
+> py app/main.py
+> ```
+
 ### Note on `os.system`
 
 The original code used `os.system('cls' if os.name == 'nt' else 'clear')`, which IDE linters (Pylance) strike through because `os.system` is considered unsafe and obsolete: it spawns a system shell (command injection risk), is hard to test, and depends on the operating system. It has been replaced with a safe `clear_screen()` function that clears the screen using ANSI escape sequences (`\033[2J\033[H`).
@@ -103,6 +120,23 @@ py app/main.py
 ```bash
 py -m pytest tests/ -v
 ```
+
+## Використання виконуваного файлу (.exe)
+
+Готовий до використання файл `+21.exe` знаходиться в корені проєкту для **Windows**. Він не вимагає встановленого Python або залежностей.
+
+**Як запустити:**
+
+```bash
++21.exe
+```
+
+Програма є консольною. Після завершення гри натисніть **Enter**, щоб закрити вікно.
+
+> ⚠️ Файл `.exe` створено тільки для Windows. На Linux/macOS запустіть вихідний код Python:
+> ```bash
+> py app/main.py
+> ```
 
 ## Структура проєкту
 
