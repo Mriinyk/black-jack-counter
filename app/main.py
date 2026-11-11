@@ -5,6 +5,7 @@ from colorama import Fore
 from pathlib import Path
 
 # Додаємо кореневу папку проекту до sys.path
+# EN: Add project root folder to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from app.logic.getfirstcards import GetFirstCards
 from app.logic.getextracard import GetExtraCard
@@ -18,35 +19,43 @@ from prettytable import PrettyTable, TableStyle
 
 def main() -> None:
     #Налаштування кольору інтерфейсу
+    # EN: Interface color setup
     colorama.init()
     print(Fore.GREEN, end="")
 
     #Об'єкти UX
+    # EN: UX objects
     logo = PrintLogo()
     logo.print_app_logo()
     color_for_info = ColorForInfo()
 
     #Вхідні дані колод
+    # EN: Decks input data
     num_decks = int(input("Введіть кількість колод: "))
 
     #Об'єкти статистики ПОЗА циклом
+    # EN: Statistics objects outside the loop
     tracker = UsedTracker(num_decks)
     score = CountSystem()
 
     #Цикл гри
+    # EN: Game loop
     while True:
 
         #Об'єкт таблиці(інтерфейсу) та налаштування вікон
+        # EN: Table object (interface) and window settings
         table = PrettyTable()
         table.set_style(TableStyle.DOUBLE_BORDER)
         sums_table = PrettyTable()
         sums_table.set_style(TableStyle.DOUBLE_BORDER)
 
         #Значення карт суперників, якщо їх нема
+        # EN: Opponents' cards values, if there are none
         rival_1_cards = []
         rival_2_cards = []
 
         # Вхідні змінні
+        # EN: Input variables
         play_with_rivals = str(input("Ви граєте з суперниками ? (y/n) - ")).lower().strip()
         your_cards = input("Введіть свої карти через пробіл: ").split()
         your_first_cards = GetFirstCards(your_cards)
@@ -63,6 +72,7 @@ def main() -> None:
         croupier_cards_sum = first_card_croupier.calculate_sum()
 
         #Список усіх перших карт
+        # EN: List of all first cards
         cards_to_count = []
         cards_to_count.extend(your_cards)
         cards_to_count.extend(card_of_croupier)
@@ -72,15 +82,18 @@ def main() -> None:
             cards_to_count.extend(rival_2_cards)
 
         #Контроль карт, які вже були використані в грі
+        # EN: Control of cards that have already been used in the game
 
         used_cards_list_for_print = tracker.update(*cards_to_count)
 
         #Розрахунок карт
+        # EN: Card calculation
         score.count_current_score(*cards_to_count)
         true_count = score.true_score(tracker.remaining_cards)
 
 
         #Таблиця виводу даних
+        # EN: Data output table
         table.title = "Дані гри"
         table.field_names = [
             "Список карт які були використані",
@@ -107,6 +120,7 @@ def main() -> None:
 
 
         #Підрахунок суми карт
+        # EN: Card sum calculation
         own_cards_sum = your_first_cards.calculate_sum()
         if rival_1_cards:
             rival_1_cards_sum = rival_1_first_cards.calculate_sum()
@@ -115,6 +129,7 @@ def main() -> None:
 
 
         #Таблиця для сумкарт
+        # EN: Table for card sums
         sums_table.title = "Суми карт"
 
         headers = ["Сума ваших карт", "Cума карт круп'є"]
@@ -137,8 +152,10 @@ def main() -> None:
 
 
         #Логіка додавання карт
+        # EN: Card adding logic
         print("="*12,"Роздача додаткових карт","="*12)
         # Цикл який приймає інпути додаткових карт, рахує нову суму карт
+        # EN: Loop that takes extra card inputs, calculates new card sum
         while True:
             own_extra_cards = input(f"Введіть ваші додаткові карти (для пропуску натисніть Enter): ").split()
             own_exra = GetExtraCard(own_extra_cards, own_cards_sum)
@@ -155,6 +172,7 @@ def main() -> None:
                 rival_2_cards_sum = rival_2_extra.calculate_new_sum()
 
             #Вивід оновлених даних гри з урахуванням 1 чи більше гравців
+            # EN: Output of updated game data taking into account 1 or more players
             all_active_extra = []
             all_active_extra.extend(own_extra_cards)
 
@@ -168,6 +186,7 @@ def main() -> None:
             true_count = score.true_score(tracker.remaining_cards)
 
             #Таблиця оновлених даних
+            # EN: Updated data table
             table.title = "Оновлені дані гри"
             table.add_row(
                 [
@@ -188,6 +207,7 @@ def main() -> None:
 
 
             #Виводить таблицю оновлених сум карт
+            # EN: Outputs table of updated card sums
 
             sums_table.title =  "Оновлені суми карт"
 
@@ -210,6 +230,7 @@ def main() -> None:
                 break
 
         #Ввід додаткових карт круп'є
+        # EN: Dealer's extra cards input
         croupier_extra_cards = input(f"Введіть відкриту та додаткові карти круп'є: ").split()
         croupier_cards_sum = first_card_croupier.calculate_sum()
         croupier_extra = GetExtraCard(croupier_extra_cards, croupier_cards_sum)
@@ -221,6 +242,7 @@ def main() -> None:
         true_count = score.true_score(tracker.remaining_cards)
 
         #Вивід таблиці фінальних даних гри
+        # EN: Output of final game data table
         table.title = "Фінальні дані гри"
 
         table.add_row(
@@ -241,6 +263,7 @@ def main() -> None:
         table.clear_rows()
 
         #Вивід таблиці фінальних сум карт
+        # EN: Output of final card sums table
         sums_table.title = "Фінальні суми карт"
 
         rows = [own_cards_sum, croupier_cards_sum]
@@ -259,10 +282,12 @@ def main() -> None:
 
 
     #Перевірка на автоматичне перетасування (якщо залишилось менше 20% карт)
+    # EN: Check for automatic reshuffle (if less than 20% of cards remain)
         if tracker.remaining_cards < (num_decks * 52 * 0.2):
             print("Увага: в колоді залишилося мало карт! Можливе перетасування.")
 
     #Запит на продовження гри та перетасовку карт
+    # EN: Request to continue the game and reshuffle cards
         exit_game = input("Бажаєте почати наступний раунд? (y/n): ").lower().strip()
 
         if exit_game == 'n':
@@ -274,16 +299,19 @@ def main() -> None:
         shuffling_cards = input("Чи круп'є перетасовує карти? (y/n): ").lower().strip()
 
     #Обнулення статистичних даних
+    # EN: Reset statistical data
         if shuffling_cards == 'y' or tracker.remaining_cards <= 0:
             tracker = UsedTracker(num_decks)
             score = CountSystem()
 
             # Очищуємо термінал
+            # EN: Clear the terminal
             os.system('cls' if os.name == 'nt' else 'clear')
 
             print("Карти перетасовано! Статистику обнулено.")
         else:
             # Очищуємо термінал
+            # EN: Clear the terminal
             os.system('cls' if os.name == 'nt' else 'clear')
 
             print("="*20, "ПОЧАТОК НОВОГО РАУНДУ", "="*20)

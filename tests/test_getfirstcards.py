@@ -20,6 +20,7 @@ def test_face_card_value():
 
 def test_multiple_aces_over_21():
     # 11 + 11 -> 12, потім + 10 -> 22 (туз уже не зменшує суму)
+    # EN: 11 + 11 -> 12, then + 10 -> 22 (ace no longer reduces the sum)
     assert GetFirstCards(["A", "A", "K"]).calculate_sum() == 22
 
 

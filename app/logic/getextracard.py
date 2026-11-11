@@ -1,4 +1,5 @@
 #Клас, який приймає список з додатковими картами, конвертує їх в int та перевіряє на тузи. Повертає нову суму карт.
+# EN: Class that takes a list of extra cards, converts them to int and checks for aces. Returns the new sum of cards.
 from app.logic.valueconverter import value_converter as converter
 
 

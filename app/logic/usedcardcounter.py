@@ -1,4 +1,5 @@
 #Контроль карт, які вже були використані в грі
+# EN: Control of cards that have already been used in the game
 class UsedTracker:
     def __init__(self, num_decks: int) -> None:
         self.used_cards = {
@@ -26,6 +27,7 @@ class UsedTracker:
         return remainder
 
 #Розрахунок відсотків випадання наступної карти
+# EN: Calculation of the probability of the next card appearing
 
     @property
     def percentage_of_cards(self) -> dict:

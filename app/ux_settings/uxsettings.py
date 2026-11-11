@@ -17,6 +17,7 @@ class PrintLogo:
 
 class ColorForInfo:
     #Логіка кольору для справжного рахунку
+    # EN: Logic for the true count color
     def color_for_true_count(self, true_count: float) -> str:
         if true_count < 1:
             count_color = Fore.RED

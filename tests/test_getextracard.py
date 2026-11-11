@@ -20,4 +20,5 @@ def test_extra_multiple_cards():
 
 def test_extra_ace_over_21():
     # 10 + 11 = 21, потім + 11 = 32 > 21 → один туз перелічується як 1: 22
+    # EN: 10 + 11 = 21, then + 11 = 32 > 21 → one ace counts as 1: 22
     assert GetExtraCard(["A", "A"], 10).calculate_new_sum() == 22

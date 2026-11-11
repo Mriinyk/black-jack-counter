@@ -1,4 +1,5 @@
 #Система розрахунку карт
+# EN: Card counting system
 class CountSystem:
     def __init__(self) -> None:
         self.wong_halves_values = {
@@ -11,10 +12,10 @@ class CountSystem:
             "8": 0.0,
             "9": -0.5,
             "10": -1.0,
-            "J": -1.0,   # Валет (J)
-            "Q": -1.0,   # Дама (Q)
-            "K": -1.0,   # Король (K)
-            "A": -1.0    # Туз (A)
+            "J": -1.0,   # Валет (J)  EN: Jack (J)
+            "Q": -1.0,   # Дама (Q)  EN: Queen (Q)
+            "K": -1.0,   # Король (K)  EN: King (K)
+            "A": -1.0    # Туз (A)  EN: Ace (A)
         }
 
         self.current_score = 0.0

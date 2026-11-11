@@ -1,7 +1,9 @@
 #Мапа карт
+# EN: Card map
 card_map = {'K': 10, 'Q': 10, 'J': 10, 'A': 11}
 
 # Буде конвертувати змінні в int
+# EN: Will convert variables to int
 def value_converter(cards) -> list[int]:
     cards_list = []
     for card in cards:
